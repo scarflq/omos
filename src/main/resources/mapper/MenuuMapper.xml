@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="omos.dao.MenuuMapper">
+  <resultMap id="BaseResultMap" type="omos.bean.Menuu">
+    <id column="c_id" jdbcType="INTEGER" property="cId" />
+    <result column="c_name" jdbcType="VARCHAR" property="cName" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="cs_id" jdbcType="INTEGER" property="csId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="good" jdbcType="INTEGER" property="good" />
+  </resultMap>
+  <resultMap id="WithSortResultMap" type="omos.bean.Menuu">
+  	<id column="c_id" jdbcType="INTEGER" property="cId" />
+    <result column="c_name" jdbcType="VARCHAR" property="cName" />
+    <result column="price" jdbcType="INTEGER" property="price" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="pic" jdbcType="VARCHAR" property="pic" />
+    <result column="cs_id" jdbcType="INTEGER" property="csId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="good" jdbcType="INTEGER" property="good" />
+    <association property="cs" javaType="omos.bean.Cs">
+    	<id column="css_id" jdbcType="INTEGER" property="csId"/>
+    	<result column="sort" jdbcType="VARCHAR" property="sort"/>
+    </association>
+    
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    c_id, c_name, price, introduction, pic, cs_id, status, good
+  </sql>
+  <sql id="WithSort_Column_List">
+  	m.c_id, m.c_name, m.price, m.introduction, m.pic, m.cs_id, m.status, m.good,c.sort
+  </sql>
+  
+  <!--List<Menuu> selectByExampleWithSort(MenuuExample example);
+
+    Menuu selectByPrimaryKeyWithSort(Integer cId); -->
+  <select id="selectByExampleWithSort" resultMap="WithSortResultMap">
+  	select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="WithSort_Column_List" />
+    from menu_ m  
+    left join cs_ c on m.cs_id=c.cs_id where m.status=1 order by c_id 
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectByPrimaryKeyWithSort" resultMap="WithSortResultMap">
+  	select 
+    <include refid="WithSort_Column_List" />
+    from menu_ m  
+    left join cs_ c on m.cs_id=c.cs_id where m.status=1 order by c_id 
+    where c_id = #{cId,jdbcType=INTEGER}	
+  </select>
+  
+  <select id="selectSort1" resultMap="WithSortResultMap">
+  	select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="WithSort_Column_List" />
+    from menu_ m  
+    left join cs_ c on m.cs_id=c.cs_id where m.status=1 and m.cs_Id=1 order by c_id 
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  <select id="selectSort2" resultMap="WithSortResultMap">
+  	select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="WithSort_Column_List" />
+    from menu_ m  
+    left join cs_ c on m.cs_id=c.cs_id where m.status=1 and m.cs_Id=2 order by c_id 
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  
+  
+  <select id="selectSort3" resultMap="WithSortResultMap">
+  	select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="WithSort_Column_List" />
+    from menu_ m  
+    left join cs_ c on m.cs_id=c.cs_id where m.status=1 and m.cs_Id=3 order by c_id 
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+    
+  <select id="selectByExample" parameterType="java.lang.String" resultMap="WithSortResultMap">
+    select
+    <include refid="WithSort_Column_List" />
+   from menu_ m   
+    left join cs_ c on m.cs_id=c.cs_id 
+    where status=1 and c_name like "%"#{cName}"%" order by c_id 
+  </select>
+  
+  
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from menu_
+    where c_id = #{cId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from menu_
+    where c_id = #{cId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="omos.bean.MenuuExample">
+    delete from menu_
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  
+  <update id="deleteMenuu" parameterType="omos.bean.Menuu">
+  	update menu_ 
+  	set status=0
+  	where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+  
+  <update id="deleteManyMenuu" parameterType="omos.bean.MenuuExample">
+  	update menu_ set status=0 
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+ 
+  
+  
+  
+  <insert id="insert" parameterType="omos.bean.Menuu">
+    insert into menu_ (c_id, c_name, price, 
+      introduction, pic, cs_id, 
+      status, good)
+    values (#{cId,jdbcType=INTEGER}, #{cName,jdbcType=VARCHAR}, #{price,jdbcType=INTEGER}, 
+      #{introduction,jdbcType=VARCHAR}, #{pic,jdbcType=VARCHAR}, #{csId,jdbcType=INTEGER}, 
+      #{status,jdbcType=INTEGER}, #{good,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="omos.bean.Menuu">
+    insert into menu_
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        c_id,
+      </if>
+      <if test="cName != null">
+        c_name,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="introduction != null">
+        introduction,
+      </if>
+      <if test="pic != null">
+        pic,
+      </if>
+      <if test="csId != null">
+        cs_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="good != null">
+        good,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cId != null">
+        #{cId,jdbcType=INTEGER},
+      </if>
+      <if test="cName != null">
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null">
+        #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="csId != null">
+        #{csId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="good != null">
+        #{good,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="omos.bean.MenuuExample" resultType="java.lang.Long">
+    select count(*) from menu_
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update menu_
+    <set>
+      <if test="record.cId != null">
+        c_id = #{record.cId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cName != null">
+        c_name = #{record.cName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null">
+        price = #{record.price,jdbcType=INTEGER},
+      </if>
+      <if test="record.introduction != null">
+        introduction = #{record.introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="record.pic != null">
+        pic = #{record.pic,jdbcType=VARCHAR},
+      </if>
+      <if test="record.csId != null">
+        cs_id = #{record.csId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.good != null">
+        good = #{record.good,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update menu_
+    set c_id = #{record.cId,jdbcType=INTEGER},
+      c_name = #{record.cName,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=INTEGER},
+      introduction = #{record.introduction,jdbcType=VARCHAR},
+      pic = #{record.pic,jdbcType=VARCHAR},
+      cs_id = #{record.csId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      good = #{record.good,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="omos.bean.Menuu">
+    update menu_
+    <set>
+      <if test="cName != null">
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=INTEGER},
+      </if>
+      <if test="introduction != null">
+        introduction = #{introduction,jdbcType=VARCHAR},
+      </if>
+      <if test="pic != null">
+        pic = #{pic,jdbcType=VARCHAR},
+      </if>
+      <if test="csId != null">
+        cs_id = #{csId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="good != null">
+        good = #{good,jdbcType=INTEGER},
+      </if>
+    </set>
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="omos.bean.Menuu">
+    update menu_
+    set c_name = #{cName,jdbcType=VARCHAR},
+      price = #{price,jdbcType=INTEGER},
+      introduction = #{introduction,jdbcType=VARCHAR},
+      pic = #{pic,jdbcType=VARCHAR},
+      cs_id = #{csId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      good = #{good,jdbcType=INTEGER}
+    where c_id = #{cId,jdbcType=INTEGER}
+  </update>
+</mapper>

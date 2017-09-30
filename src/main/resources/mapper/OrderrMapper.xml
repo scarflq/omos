@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="omos.dao.OrderrMapper">
+  <resultMap id="BaseResultMap" type="omos.bean.Orderr">
+    <id column="o_id" jdbcType="INTEGER" property="oId" />
+    <result column="u_id" jdbcType="INTEGER" property="uId" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="order_time" jdbcType="VARCHAR" property="orderTime" />
+    <result column="get_time" jdbcType="VARCHAR" property="getTime" />
+    <result column="total" jdbcType="INTEGER" property="total" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    o_id, u_id, status, order_time, get_time, total
+  </sql>
+   <select id="selectOidByTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+	select * from `order_` where time ='#{time,jdbcType=VARCHAR}'
+  </select>
+  <select id="selectByExample" parameterType="omos.bean.OrderrExample" resultMap="BaseResultMap">
+     SELECT * FROM order_ ORDER BY o_id DESC
+  </select>
+    <select id="selectByUid" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+          SELECT * FROM order_ where u_id =#{uId,jdbcType=INTEGER} ORDER BY o_id DESC
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from order_
+    where o_id = #{oId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from order_
+    where o_id = #{oId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="omos.bean.OrderrExample">
+    delete from order_
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="omos.bean.Orderr">
+    insert into order_ (o_id, u_id, status, 
+      order_time, get_time, total
+      )
+    values (#{oId,jdbcType=INTEGER}, #{uId,jdbcType=INTEGER}, #{status,jdbcType=INTEGER}, 
+      #{orderTime,jdbcType=VARCHAR}, #{getTime,jdbcType=VARCHAR}, #{total,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="add" parameterType="omos.bean.Orderr" useGeneratedKeys="true" keyProperty="oId" >
+    insert into order_
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        o_id,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="orderTime != null">
+        order_time,
+      </if>
+      <if test="getTime != null">
+        get_time,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null">
+        #{orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="getTime != null">
+        #{getTime,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertSelective" parameterType="omos.bean.Orderr">
+    insert into order_
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        o_id,
+      </if>
+      <if test="uId != null">
+        u_id,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="orderTime != null">
+        order_time,
+      </if>
+      <if test="getTime != null">
+        get_time,
+      </if>
+      <if test="total != null">
+        total,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="oId != null">
+        #{oId,jdbcType=INTEGER},
+      </if>
+      <if test="uId != null">
+        #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null">
+        #{orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="getTime != null">
+        #{getTime,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        #{total,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="omos.bean.OrderrExample" resultType="java.lang.Long">
+    select count(*) from order_
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update order_
+    <set>
+      <if test="record.oId != null">
+        o_id = #{record.oId,jdbcType=INTEGER},
+      </if>
+      <if test="record.uId != null">
+        u_id = #{record.uId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null">
+        status = #{record.status,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderTime != null">
+        order_time = #{record.orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.getTime != null">
+        get_time = #{record.getTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.total != null">
+        total = #{record.total,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update order_
+    set o_id = #{record.oId,jdbcType=INTEGER},
+      u_id = #{record.uId,jdbcType=INTEGER},
+      status = #{record.status,jdbcType=INTEGER},
+      order_time = #{record.orderTime,jdbcType=VARCHAR},
+      get_time = #{record.getTime,jdbcType=VARCHAR},
+      total = #{record.total,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="omos.bean.Orderr">
+    update order_
+    <set>
+      <if test="uId != null">
+        u_id = #{uId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="orderTime != null">
+        order_time = #{orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="getTime != null">
+        get_time = #{getTime,jdbcType=VARCHAR},
+      </if>
+      <if test="total != null">
+        total = #{total,jdbcType=INTEGER},
+      </if>
+    </set>
+    where o_id = #{oId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="omos.bean.Orderr">
+    update order_
+    set u_id = #{uId,jdbcType=INTEGER},
+      status = #{status,jdbcType=INTEGER},
+      order_time = #{orderTime,jdbcType=VARCHAR},
+      get_time = #{getTime,jdbcType=VARCHAR},
+      total = #{total,jdbcType=INTEGER}
+    where o_id = #{oId,jdbcType=INTEGER}
+  </update>
+</mapper>
